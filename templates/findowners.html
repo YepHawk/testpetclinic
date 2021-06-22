@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+{% extends "base.html" %}
+  {% block body_block %}
+
+    <h3>Find Owners</h3>
+    <form method="post" value="last_name">
+      <input type="search" placeholder="Search Owner by Last Name" name="searched"><button type="submit">Search</button>
+      {% csrf_token %}
+    </form>
+    {% if searched %}
+      <br>
+      {% for owner in listofowners %}
+        <td><a href="{% url 'ownerinfo' ownerid=owner.owner_id %}">{{ owner.first_name }}</a></td>
+        <td><a href="{% url 'ownerinfo' ownerid=owner.owner_id %}">{{ owner.last_name }}</a></td>
+        <td>{{ owner.address }}</td>
+        <td>{{ owner.city }}</td>
+        <td>{{ owner.telephone }}</td>
+      <br/>
+      {% endfor %}
+    {% else %}
+      <p>You have not searched anything yet...</p>
+      <a href="addowner.html">Add Owner</a>
+    {% endif %}
+
+
+  {% endblock %}

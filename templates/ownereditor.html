@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+{% extends "base.html" %}
+  {% block body_block %}
+
+    <h1>Edit Owner...</h1>
+    <form method="POST">
+      {{ owner.as_p }}
+      {% csrf_token %}
+      <input type="submit" value="Submit">
+    </form>
+
+  {% endblock %}
