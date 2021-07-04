@@ -4,19 +4,17 @@
   {% block body_block %}
 
     <h1>Owner Info...to be done...</h1>
-    {{ owner }}
 
       <h3>Profile</h3>
-      <p>Name: {{ owner.first_name }} {{ owner.last_name }}</p>
+      <p>Name: {{ owner }}</p>
       <p>Address: {{ owner.address }}</p>
       <p>City: {{ owner.city }}</p>
       <p>Telephone: {{ owner.telephone }}</p>
 
-      <a href="{% url 'addpets' %}">Add New Pet</a>
+      <a href="{% url 'addpets' ownerid=owner.owner_id %}">Add New Pet</a>
 
       <h3>Pets and Visits</h3>
-      {{ pets }}
-      {% for pet in pets %}
+      {% for pet in owner.pets_set.all %}
         <td>Name: {{ pet.name }}</td>
         <td>ID: {{ pet.pet_id }}</td>
         <td><a href="{% url 'home' %}">Edit Pet</a></td>

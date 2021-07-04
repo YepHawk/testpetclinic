@@ -44,38 +44,41 @@ def findowners(request):
         return render(request,'findowners.html')
 
 def ownerinfo(request, ownerid):
-    owner = Owners.objects.filter(owner_id=ownerid)
-    pets = Pets.objects.filter(owner_id=ownerid)
-    return render(request,'ownerinfo.html',{'owner':owner,'pets':pets})
-
-# def ownereditor(request, ownerid="Default"):
-#     if request.method =="POST":
-#         owner = EditOwner(request.POST, instance=request.Owner)
-#         if owner.is_valid():
-#             owner.save()
-#             return redirect('home.html')
-#     else:
-#         owner = EditOwner(instance=request.Owner)
-#         return render(request,'ownereditor.html',{'owner':owner})
+    owner = Owners.objects.get(owner_id=ownerid)
+    return render(request,'ownerinfo.html',{'owner':owner})
 
 def addowner(request):
-    owner = AddOwner()
+    ownerForm = AddOwner()
     if request.method == "POST":
-        owner = AddOwner(request.POST)
-        if owner.is_valid():
-            owner.save(commit=True)
-            return render(request,'findowners.html')
+        ownerForm = AddOwner(request.POST)
+        if ownerForm.is_valid():
+            owner = ownerForm.save(commit=True)
+            return render(request,'ownerinfo.html', {'owner':owner})
         else:
             print('Error: Invalid')
-    return render(request,'addowner.html',{'owner':owner})
+    return render(request,'addowner.html',{'owner':ownerForm})
 
-def addpets(request):
+def addpets(request, ownerid):
+    owner = Owners.objects.get(owner_id=ownerid)
     pets = AddPets()
+    print (owner)
     if request.method == "POST":
         pets = AddPets(request.POST)
         if pets.is_valid():
-            pets.save(commit=True)
-            return render(request,'addpets.html')
+            ownedpet = pets.save(commit=False)
+            ownedpet.owner_id = ownerid
+            ownedpet.save()
+            return render(request,'ownerinfo.html',{'owner':owner})
         else:
             print('Error: Invalid')
-    return render(request,'addpets.html',{'pets':pets})
+    return render(request,'addpets.html',{'owner':owner,'pets':pets})
+
+    # def ownereditor(request, ownerid="Default"):
+    #     if request.method =="POST":
+    #         owner = EditOwner(request.POST, instance=request.Owner)
+    #         if owner.is_valid():
+    #             owner.save()
+    #             return redirect('home.html')
+    #     else:
+    #         owner = EditOwner(instance=request.Owner)
+    #         return render(request,'ownereditor.html',{'owner':owner})

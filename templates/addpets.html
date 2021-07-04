@@ -5,6 +5,7 @@
 
     <h1>Add Pets...</h1>
     <form method="POST">
+      <p>Owner: {{ owner }}</p>
       {{ pets.as_p }}
       {% csrf_token %}
       <input type="submit" value="Submit">

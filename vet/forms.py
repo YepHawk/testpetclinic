@@ -14,7 +14,7 @@ class AddOwner(forms.ModelForm):
 class AddPets(forms.ModelForm):
     class Meta:
         model = Pets
-        fields = '__all__'
+        fields = ('pet_id','name','bday','type')
 
 class EditOwner(UserChangeForm):
     class Meta:

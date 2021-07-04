@@ -11,8 +11,7 @@
     {% if searched %}
       <br>
       {% for owner in listofowners %}
-        <td><a href="{% url 'ownerinfo' ownerid=owner.owner_id %}">{{ owner.first_name }}</a></td>
-        <td><a href="{% url 'ownerinfo' ownerid=owner.owner_id %}">{{ owner.last_name }}</a></td>
+        <td><a href="{% url 'ownerinfo' ownerid=owner.owner_id %}">{{ owner }}</a></td>
         <td>{{ owner.address }}</td>
         <td>{{ owner.city }}</td>
         <td>{{ owner.telephone }}</td>

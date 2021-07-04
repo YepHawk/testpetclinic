@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from vet import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home, name='home'),
@@ -24,5 +25,5 @@ urlpatterns = [
     path('ownerinfo/<ownerid>/',views.ownerinfo, name='ownerinfo'),
     # path('ownereditor/<ownerid>/',views.ownereditor, name='ownereditor'),
     path('addowner.html',views.addowner, name='addowner'),
-    path('addpets.html',views.addpets, name='addpets'),
+    path('addpets/<ownerid>/',views.addpets, name='addpets'),
 ]

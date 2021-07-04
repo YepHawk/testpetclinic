@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <!DOCTYPE html>
 {% extends "base.html" %}
+{% load static %}
   {% block body_block %}
 
     <h1>Home...</h1>
+
+    <img src= "{% static "media/cat.jpg" %}" alt="no cat :(">
+
 
   {% endblock %}
