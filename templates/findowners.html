@@ -8,19 +8,20 @@
       <input type="search" placeholder="Search Owner by Last Name" name="searched"><button type="submit">Search</button>
       {% csrf_token %}
     </form>
-    {% if searched %}
       <br>
       {% for owner in listofowners %}
         <td><a href="{% url 'ownerinfo' ownerid=owner.owner_id %}">{{ owner }}</a></td>
         <td>{{ owner.address }}</td>
         <td>{{ owner.city }}</td>
         <td>{{ owner.telephone }}</td>
+        <td>
+          {% for pet in owner.pets_set.all %}
+            {{ pet }}
+          {% endfor %}
+        </td>
       <br/>
       {% endfor %}
-    {% else %}
-      <p>You have not searched anything yet...</p>
-      <a href="addowner.html">Add Owner</a>
-    {% endif %}
 
+    <a href="addowner.html">Add Owner</a>
 
   {% endblock %}

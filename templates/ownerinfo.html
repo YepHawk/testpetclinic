@@ -11,15 +11,16 @@
       <p>City: {{ owner.city }}</p>
       <p>Telephone: {{ owner.telephone }}</p>
 
+      <a href="{% url 'ownereditor' ownerid=owner.owner_id %}">Edit Owner</a>
       <a href="{% url 'addpets' ownerid=owner.owner_id %}">Add New Pet</a>
 
       <h3>Pets and Visits</h3>
       {% for pet in owner.pets_set.all %}
         <td>Name: {{ pet.name }}</td>
         <td>ID: {{ pet.pet_id }}</td>
-        <td><a href="{% url 'home' %}">Edit Pet</a></td>
+        <td><a href="{% url 'editpet' petid=pet.pet_id %}">Edit Pet</a></td>
         <td>Visit info: use for loop for multiple visit like this pet section.</td>
-        <td><a href="{% url 'home' %}">Edit Visit</a></td>
+        <td><a href="{% url 'addvisit' petid=pet.pet_id %}">Add Visit</a></td>
       {% endfor %}
 
   {% endblock %}

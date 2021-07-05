@@ -35,6 +35,9 @@ class Pets(models.Model):
     owner = models.ForeignKey('Owners', on_delete=models.CASCADE)
     type = models.ForeignKey('Types', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         # managed = False
         db_table = 'Pets'

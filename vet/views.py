@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from vet.forms import SearchOwner, AddOwner, AddPets, EditOwner
+from vet.forms import SearchOwner, AddOwner, AddPets, EditOwner, EditPet, AddVisit
 from vet.models import Owners, Pets
 #from django.http import HttpResponse
 
@@ -8,38 +8,14 @@ from vet.models import Owners, Pets
 def home(request):
     return render(request,'home.html')
 
-# def findowners(request):
-#     form = SearchOwner()
-#     listofowners = []
-#     if request.method == "POST":
-#         form = SearchOwner(request.POST)
-#         if form.is_valid():
-#             print(form.cleaned_data['last_name'])
-#             for person in Owners:
-#                 if person.objects.(last_name) == form:
-#                     print("working as intended")
-#                     listofowners.append(person)
-#     return render(request,'findowners.html', {'form':form})
-
-# def findowners(request):
-#
-#     if request.method == "POST":
-#         lnsearched = SearchOwner(request.POST)
-#         print(lnsearched)
-#         listofowners = Owners.objects.filter(last_name__contains=lnsearched)
-#         return render(request,'findowners.html', {'lnsearched':lnsearched, 'listofowners':listofowners})
-#
-#     else:
-#         form = SearchOwner()
-#         return render(request,'findowners.html', {'form':form})
-
-#def searchforowners(request):
-
 def findowners(request):
     if request.method == 'POST':
         searched = request.POST['searched'] #can be recoded with if statement so that if search is empty string, then show all owners, else, show what the string matches
-        listofowners = Owners.objects.filter(last_name__contains=searched)
-        return render(request,'findowners.html',{'searched':searched,'listofowners':listofowners})
+        if len(searched) == 0:
+            listofowners = Owners.objects.all()
+        else:
+            listofowners = Owners.objects.filter(last_name__contains=searched)
+        return render(request,'findowners.html',{'listofowners':listofowners})
     else:
         return render(request,'findowners.html')
 
@@ -61,7 +37,6 @@ def addowner(request):
 def addpets(request, ownerid):
     owner = Owners.objects.get(owner_id=ownerid)
     pets = AddPets()
-    print (owner)
     if request.method == "POST":
         pets = AddPets(request.POST)
         if pets.is_valid():
@@ -73,12 +48,34 @@ def addpets(request, ownerid):
             print('Error: Invalid')
     return render(request,'addpets.html',{'owner':owner,'pets':pets})
 
-    # def ownereditor(request, ownerid="Default"):
-    #     if request.method =="POST":
-    #         owner = EditOwner(request.POST, instance=request.Owner)
-    #         if owner.is_valid():
-    #             owner.save()
-    #             return redirect('home.html')
-    #     else:
-    #         owner = EditOwner(instance=request.Owner)
-    #         return render(request,'ownereditor.html',{'owner':owner})
+def ownereditor(request, ownerid):
+    owner = Owners.objects.get(owner_id=ownerid)
+    ownerform = EditOwner(request.POST or None, instance=owner)
+    if ownerform.is_valid():
+        ownerform.save()
+        return render(request,'ownerinfo.html',{'owner':owner})
+    else:
+        print('Oh no...')
+    return render(request,'ownereditor.html',{'owner':owner,'ownerform':ownerform})
+
+def editpet(request, petid):
+    pet = Pets.objects.get(pet_id=petid)
+    petform = EditPet(request.POST or None, instance=pet)
+    owner = Owners.objects.get(owner_id=pet.owner_id)
+    if petform.is_valid():
+        petform.save()
+        return render(request,'ownerinfo.html',{'owner':owner})
+    else:
+        print('Oh no...')
+    return render(request,'editpet.html',{'owner':owner,'petform':petform})
+
+def addvisit(request, petid):
+    pet = Pets.objects.get(pet_id=petid)
+    owner = Owners.objects.get(owner_id=pet.owner_id)
+    visitform = AddVisit(request.POST)
+    if visitform.is_valid():
+        vis = visitform.save(commit=False)
+        vis.pet_id = petid
+        vis.save()
+        return render(request,'ownerinfo.html',{'owner':owner})
+    return render(request,'addvisit.html',{'pet':pet,'visitform':visitform})

@@ -1,5 +1,5 @@
 from django import forms
-from vet.models import Owners, Pets
+from vet.models import Owners, Pets, Visits
 from django.contrib.auth.forms import UserChangeForm
 
 #currently unused...
@@ -19,4 +19,14 @@ class AddPets(forms.ModelForm):
 class EditOwner(UserChangeForm):
     class Meta:
         model = Owners
-        fields = '__all__'
+        fields = ('first_name','last_name','address','city','telephone')
+
+class EditPet(UserChangeForm):
+    class Meta:
+        model = Pets
+        fields = ('name','bday')
+
+class AddVisit(forms.ModelForm):
+    class Meta:
+        model = Visits
+        fields = ('visit_date','description')

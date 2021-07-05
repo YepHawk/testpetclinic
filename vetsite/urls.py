@@ -23,7 +23,9 @@ urlpatterns = [
     path('',views.home, name='home'),
     path('findowners.html',views.findowners, name='findowners'),
     path('ownerinfo/<ownerid>/',views.ownerinfo, name='ownerinfo'),
-    # path('ownereditor/<ownerid>/',views.ownereditor, name='ownereditor'),
+    path('ownereditor/<ownerid>/',views.ownereditor, name='ownereditor'),
     path('addowner.html',views.addowner, name='addowner'),
     path('addpets/<ownerid>/',views.addpets, name='addpets'),
+    path('editpet/<petid>/',views.editpet, name='editpet'),
+    path('addvisit/<petid>/',views.addvisit, name='addvisit'),
 ]
